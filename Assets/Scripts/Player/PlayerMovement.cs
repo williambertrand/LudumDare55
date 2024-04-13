@@ -36,8 +36,8 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
 
     private void Awake()
     {
-        rigidBody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        //rigidBody = GetComponent<Rigidbody2D>();
+        //animator = GetComponent<Animator>();
         _collider2D = GetComponent<Collider2D>();
         //playerController = GetComponent<PlayerController>();
         currentState = PlayerState.Normal;
