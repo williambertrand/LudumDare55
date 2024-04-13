@@ -13,7 +13,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Item
   - 
   - 
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2827541129
+    locked: 0
+  - name: Player
+    uniqueID: 1205288169
+    locked: 0
+  - name: Objects
+    uniqueID: 1205428429
+    locked: 0
+  - name: Foreground
+    uniqueID: 3483190583
     locked: 0
