@@ -1104,7 +1104,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1205428429
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 04447e143bbfb484d920750667a9dd47, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1127,13 +1127,14 @@ GameObject:
   - component: {fileID: 782701975}
   - component: {fileID: 782701977}
   - component: {fileID: 782701976}
+  - component: {fileID: 782701978}
   m_Layer: 5
   m_Name: Transition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &782701975
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1141,7 +1142,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 782701974}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1193,6 +1194,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 782701974}
   m_CullTransparentMesh: 1
+--- !u!225 &782701978
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782701974}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &782718458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1673,13 +1686,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentRoom: 0
+  totalTasks: 0
+  didWin: 0
   gameRooms:
   - {fileID: 11400000, guid: 686934e793d607d4fb737904b00cc51c, type: 2}
   - {fileID: 11400000, guid: d78f40642790d1748b7be49be0a53b35, type: 2}
   roomHolder: {fileID: 1886300669}
+  delayTransitionTime: 1.5
   transitionTime: 0.75
   transitionHoldTime: 1.5
-  roomTransitionUI: {fileID: 782701974}
+  roomTransitionUI: {fileID: 782701978}
 --- !u!4 &1177173808
 Transform:
   m_ObjectHideFlags: 0

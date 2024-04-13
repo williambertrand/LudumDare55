@@ -1,28 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class GameplayManager : MonoSingleton<GameplayManager>
 {
 
     // Data required between rooms:
     public int currentRoom;
+    public int totalTasks;
+    public bool didWin;
     public List<Room> gameRooms;
     public GameObject roomHolder;
 
     [Header("Transitioning Between rooms")]
+    public float delayTransitionTime;
     public float transitionTime;
     public float transitionHoldTime;
-    public GameObject roomTransitionUI;
+    public CanvasGroup roomTransitionUI;
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
         RoomTasksManager.Instance.onRoomComplete += OnRoomCompleted;
-
+        totalTasks = 0;
         CheckRoomSetup();
 
         OnNextRoom();
+        didWin = false;
     }
     // Start is called before the first frame update
     void Start()
@@ -50,7 +56,15 @@ public class GameplayManager : MonoSingleton<GameplayManager>
     public void OnRoomCompleted(List<Task> tasks)
     {
 
-        Debug.Log("Game mgr ROOM COMPLETE!!");
+        totalTasks += tasks.Count;
+
+        if (currentRoom == gameRooms.Count - 1)
+        {
+            // On game completed!
+            didWin = true;
+            StartCoroutine(HandleTransitionToGameOver());
+            return;
+        }
 
         // Update score
         currentRoom += 1;
@@ -62,6 +76,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     public void OnNextRoom()
     {
+
         Room newRoom = gameRooms[currentRoom];
         GameObject roomGameObjSpawn = GameObject.Find(newRoom.roomName + "/RoomBasics/PlayerSpawn");
         if (roomGameObjSpawn == null)
@@ -88,6 +103,8 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     public IEnumerator HandleTransitionAndNextRoom()
     {
+        yield return new WaitForSeconds(delayTransitionTime);
+
         AnimateRoomTransition(true);
         yield return new WaitForSeconds(transitionTime);
 
@@ -101,6 +118,22 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     private void AnimateRoomTransition(bool shown)
     {
-        roomTransitionUI.SetActive(shown);
+        
+        if(shown)
+        {
+            roomTransitionUI.alpha = 0;
+            roomTransitionUI.DOFade(1, transitionTime);
+        } else
+        {
+            roomTransitionUI.alpha = 1;
+            roomTransitionUI.DOFade(0, transitionTime);
+        }
+    }
+
+    public IEnumerator HandleTransitionToGameOver()
+    {
+        yield return new WaitForSeconds(delayTransitionTime);
+
+        SceneManager.LoadScene(SCENES.END);
     }
 }
