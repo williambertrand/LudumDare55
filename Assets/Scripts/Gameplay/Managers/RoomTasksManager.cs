@@ -9,11 +9,11 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
     public List<Task> currentRoomTasks;
     private int currentTaskCount;
 
-    delegate void OnTaskComplete();
+    public delegate void OnTaskComplete();
     OnTaskComplete onTaskComplete;
 
-    delegate void OnRoomComplete(List<Task> tasks);
-    OnRoomComplete onRoomComplete;
+    public delegate void OnRoomComplete(List<Task> tasks);
+    public OnRoomComplete onRoomComplete;
 
     public TMP_Text taskCounterText;
     public GameObject roomCompleteUI;
@@ -32,8 +32,6 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
             }
         }
       
-
-        OnNewRoom();
     }
 
     public void OnTaskWasCompleted()
@@ -55,19 +53,10 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
         
     }
 
-    private List<Task> loadRoomTasks()
-    {
-
-        List<Task> testTasks = new List<Task>();
-        testTasks.Add(new Task());
-        testTasks.Add(new Task());
-        return testTasks;
-    }
-
-    void OnNewRoom()
+    public void OnNewRoom(Room r)
     {
         currentTaskCount = 0;
-        currentRoomTasks = loadRoomTasks();
+        currentRoomTasks = r.tasks;
         roomCompleteUI.SetActive(false);
         UpdateUI();
     }
