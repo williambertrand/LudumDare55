@@ -95,6 +95,10 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         GameObject roomGameObjSpawn = GameObject.Find(newRoom.roomName + "/RoomBasics/PlayerSpawn");
         if (roomGameObjSpawn == null)
         {
+            roomGameObjSpawn = GameObject.Find(newRoom.roomName + "/RoomBasicsVariant/PlayerSpawn");
+        }
+        if (roomGameObjSpawn == null)
+        {
             Debug.LogWarningFormat("Did not find room spawn: {0}", newRoom.roomName);
         }
         RoomTasksManager.Instance.OnNewRoom(newRoom);
@@ -106,6 +110,12 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         for(int i = 0; i > gameRooms.Count; i++)
         {
             Room roomDef = gameRooms[i];
+
+            if (!roomDef.roomName.StartsWith("Room"))
+            {
+                Debug.LogWarningFormat("Room name not set for room: {0}", i);
+            }
+
             GameObject roomGameObj = GameObject.Find(roomDef.roomName);
 
             if (roomGameObj == null)

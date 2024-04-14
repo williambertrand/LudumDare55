@@ -10,17 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78515ed83aafb3b46bb6b0ab611bb1f5, type: 3}
-  m_Name: Room2
+  m_Name: Room3
   m_EditorClassIdentifier: 
-  roomName: Room2
-  dialogue: 
+  roomName: Room3
+  dialogue: Please put everything back where it belongs!
   tutorial: 
   transitionText: 
-  numTasks: 2
+  numTasks: 3
   tasks:
-  - type: 2
+  - type: 3
     description: 
     items: []
-  - type: 0
+  - type: 3
+    description: 
+    items: []
+  - type: 3
     description: 
     items: []

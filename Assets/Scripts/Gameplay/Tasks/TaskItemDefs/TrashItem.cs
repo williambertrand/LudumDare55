@@ -22,7 +22,6 @@ public class TrashItem : TaskItem
         FindObjectOfType<PlayerInteraction>().TryPickUp(this);
         // set outlined version of the sprite
         activeInteractionSprite.enabled = true;
-
     }
 
     public override void HandleItemInteract(TaskItem t)
