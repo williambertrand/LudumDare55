@@ -7,17 +7,22 @@ public class TrashItem : TaskItem
 {
 
     private bool complete;
+    [SerializeField] private SpriteRenderer activeInteractionSprite;
 
     private void Start()
     {
         type = TaskItemInteractionType.PICK_UP;
         complete = false;
+        activeInteractionSprite.enabled = false;
     }
 
     public override void HandlePlayerInteract()
     {
         if (complete) return;
         FindObjectOfType<PlayerInteraction>().TryPickUp(this);
+        // set outlined version of the sprite
+        activeInteractionSprite.enabled = true;
+
     }
 
     public override void HandleItemInteract(TaskItem t)

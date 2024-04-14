@@ -38,6 +38,12 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         OnNewRoomStarted();
         didWin = false;
     }
+
+    private void OnDestroy()
+    {
+        RoomTasksManager.Instance.onRoomComplete -= OnRoomCompleted;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -112,7 +118,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>
     public IEnumerator HandleTransitionAndNextRoom()
     {
         Room newRoom = gameRooms[currentRoom];
-        transitionTitle.text = newRoom.transitionText || DEFAULT_TRANSITION_TEXT; 
+        transitionTitle.text = newRoom.transitionText.Equals("") ? DEFAULT_TRANSITION_TEXT: newRoom.transitionText; 
         yield return new WaitForSeconds(delayTransitionTime);
 
         AnimateRoomTransition(true);
@@ -165,7 +171,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>
             yield return new WaitForSeconds(3.0f);
         }
 
-        if (newRoom.tutorial != null)
+        if (!newRoom.tutorial.Equals(""))
         {
             dialogueText.text = newRoom.tutorial;
             //ShowDialogueText(newRoom.tutorial);
@@ -177,7 +183,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     private void ShowDialogue()
     {
-        dialogueUIPanel.transform.DOMoveY(75, 0.75f);
+        dialogueUIPanel.transform.DOMoveY(100, 0.75f);
     }
 
     private void HideDialogue()

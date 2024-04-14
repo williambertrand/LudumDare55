@@ -24,13 +24,18 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
     // Start is called before the first frame update
     void Start()
     {
-        
+        RoomTasksManager.Instance.onRoomComplete += OnCompleteRoom;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void OnDestroy()
+    {
+        RoomTasksManager.Instance.onRoomComplete -= OnCompleteRoom;
     }
 
     public void TryPickUp(TaskItem t)
@@ -122,6 +127,16 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
         {
             onHoldDownInteractEnd?.Invoke();
         }   
+    }
+
+    private void OnCompleteRoom(List<Task> tasks)
+    {
+        // make sure player drops an item like brrom if still holding
+        if(currentCaryItem != null)
+        {
+            Destroy(currentCaryItem);
+            currentCaryItem = null;
+        }
     }
 
     private void OnDrawGizmosSelected()
