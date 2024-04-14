@@ -9,6 +9,7 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
 
     public List<Task> currentRoomTasks;
     private int currentTaskCount;
+    private int roomTaskCount;
 
     public delegate void OnTaskComplete();
     OnTaskComplete onTaskComplete;
@@ -41,7 +42,7 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
         currentTaskCount += 1;
         UpdateUI();
 
-        if(currentTaskCount == currentRoomTasks.Count)
+        if(currentTaskCount == roomTaskCount)
         {
             roomCompleteUI.DOFade(1, 0.5f);
             onRoomComplete?.Invoke(currentRoomTasks);
@@ -58,12 +59,13 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
     {
         currentTaskCount = 0;
         currentRoomTasks = r.tasks;
+        roomTaskCount = r.numTasks;
         roomCompleteUI.DOFade(0, 0.5f);
         UpdateUI();
     }
 
     void UpdateUI()
     {
-        taskCounterText.text = string.Format("Tasks Complete: {0}/{1}", currentTaskCount, currentRoomTasks.Count);
+        taskCounterText.text = string.Format("Tasks Complete: {0}/{1}", currentTaskCount, roomTaskCount);
     }
 }

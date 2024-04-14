@@ -10,17 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78515ed83aafb3b46bb6b0ab611bb1f5, type: 3}
-  m_Name: Room2
+  m_Name: Room1
   m_EditorClassIdentifier: 
-  roomName: Room2
-  dialogue: 
+  roomName: Room1
+  dialogue: Tidy Up Demon, please put the books back on the shelf!
   tutorial: 
-  transitionText: 
-  numTasks: 2
+  transitionText: You have been summoned... again!
+  numTasks: 3
   tasks:
-  - type: 2
-    description: 
-    items: []
-  - type: 0
-    description: 
+  - type: 3
+    description: Put the book  away
     items: []

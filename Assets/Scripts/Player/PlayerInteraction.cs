@@ -15,11 +15,11 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
     public float interactRadius;
     public LayerMask interactLayer;
 
-    public delegate void OnHoldInteractionStart();
+    public delegate void OnHoldInteractionStart(TaskItem i);
     public OnHoldInteractionStart onHoldDownInteractStart;
 
     public delegate void OnHoldInteractionEnd();
-    public OnHoldInteractionStart onHoldDownInteractEnd;
+    public OnHoldInteractionEnd onHoldDownInteractEnd;
 
     // Start is called before the first frame update
     void Start()
@@ -88,7 +88,7 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
                         }
                         else if (otherItem is SweepItem)
                         {
-                            onHoldDownInteractStart?.Invoke();
+                            onHoldDownInteractStart?.Invoke(otherItem);
                             return;
                         }
                     } else
@@ -107,7 +107,6 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
             Collider2D col = Physics2D.OverlapCircle(interactPos.position, interactRadius, interactLayer);
             if (col != null)
             {
-                Debug.LogFormat("interact item: {0}", col.gameObject.name);
                 TaskItem otherItem = col.gameObject.GetComponent<TaskItem>();
                 if(otherItem == null)
                 {
@@ -118,7 +117,7 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
                 {
                     if (currentCaryItem == null || !currentCaryItem.id.Contains("Broom"))
                         return;
-                    onHoldDownInteractStart?.Invoke();
+                    onHoldDownInteractStart?.Invoke(otherItem);
                 }
                 otherItem.HandlePlayerInteract();
             }
@@ -134,8 +133,7 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
         // make sure player drops an item like brrom if still holding
         if(currentCaryItem != null)
         {
-            Destroy(currentCaryItem);
-            currentCaryItem = null;
+            Drop();
         }
     }
 

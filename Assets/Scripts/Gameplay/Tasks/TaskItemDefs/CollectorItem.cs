@@ -15,6 +15,8 @@ public class CollectorItem : TaskItem
     public Transform[] spots;
     private int spotsUsed;
 
+    [SerializeField] private SpriteRenderer onLimitReachedSprite;
+
     private void Start()
     {
         type = TaskItemInteractionType.COLLECTOR;
@@ -28,6 +30,7 @@ public class CollectorItem : TaskItem
 
     public override void HandleItemInteract(TaskItem item)
     {
+        if (hasLimit && spotsUsed == limit) return;
         if(!(item is TrashItem) && !(item is TidyItem))
         {
             Debug.Log("Trash can does not interact with this item");
@@ -39,13 +42,19 @@ public class CollectorItem : TaskItem
             {
                 // Collect this item
                 item.OnCollect(this);
+                spotsUsed += 1;
             }
-            return;
         }
         else
         {
             // Collect!
             item.OnCollect(this);
+        }
+
+        if(hasLimit && spotsUsed == limit)
+        {
+            if (onLimitReachedSprite != null)
+                onLimitReachedSprite.enabled = true;
         }
     }
 
