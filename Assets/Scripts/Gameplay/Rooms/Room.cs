@@ -4,6 +4,9 @@ using UnityEngine;
 public class Room : ScriptableObject
 {
     public string roomName;
+    public string dialogue;
+    public string tutorial;
+    public string transitionText;
     public int numTasks;
     public System.Collections.Generic.List<Task> tasks;
 }

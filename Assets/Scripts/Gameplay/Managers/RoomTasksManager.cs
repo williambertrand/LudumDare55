@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class RoomTasksManager : MonoSingleton<RoomTasksManager>
 {
@@ -16,7 +17,7 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
     public OnRoomComplete onRoomComplete;
 
     public TMP_Text taskCounterText;
-    public GameObject roomCompleteUI;
+    public CanvasGroup roomCompleteUI;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +43,7 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
 
         if(currentTaskCount == currentRoomTasks.Count)
         {
-            roomCompleteUI.SetActive(true);
+            roomCompleteUI.DOFade(1, 0.5f);
             onRoomComplete?.Invoke(currentRoomTasks);
         }
     }
@@ -57,12 +58,12 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
     {
         currentTaskCount = 0;
         currentRoomTasks = r.tasks;
-        roomCompleteUI.SetActive(false);
+        roomCompleteUI.DOFade(0, 0.5f);
         UpdateUI();
     }
 
     void UpdateUI()
     {
-        taskCounterText.text = string.Format("Tasks: {0}/{1}", currentTaskCount, currentRoomTasks.Count);
+        taskCounterText.text = string.Format("Tasks Complete: {0}/{1}", currentTaskCount, currentRoomTasks.Count);
     }
 }

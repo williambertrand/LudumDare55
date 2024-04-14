@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Room1
   m_EditorClassIdentifier: 
   roomName: Room1
+  dialogue: Tidy Up Demon, please put the books back on the shelf!
+  tutorial: 
+  transitionText: You have been summoned... again!
   numTasks: 2
   tasks:
   - type: 3

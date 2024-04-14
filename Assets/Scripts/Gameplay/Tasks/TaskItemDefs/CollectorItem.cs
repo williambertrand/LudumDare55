@@ -12,11 +12,13 @@ public class CollectorItem : TaskItem
     public bool hasLimit;
     public int limit;
 
-    public Transform spot;
+    public Transform[] spots;
+    private int spotsUsed;
 
     private void Start()
     {
         type = TaskItemInteractionType.COLLECTOR;
+        spotsUsed = 0;
     }
 
     public override void HandlePlayerInteract()
@@ -45,6 +47,12 @@ public class CollectorItem : TaskItem
             // Collect!
             item.OnCollect(this);
         }
+    }
+
+    public Transform getOpenSpot()
+    {
+        // Just re-use spots if we've run out
+        return spots[Mathf.Min(spotsUsed, spots.Length - 1)];
     }
 
 
