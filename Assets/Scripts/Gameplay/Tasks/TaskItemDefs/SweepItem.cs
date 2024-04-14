@@ -26,6 +26,7 @@ public class SweepItem : TaskItem
         if(timeRemaining <= 0.2f)
         {
             RoomTasksManager.Instance.OnTaskWasCompleted();
+            EffectsManager.Instance.SpawnEffectAtPosition(EffectType.SPARKLE, transform.position);
             Destroy(gameObject);
         }
 
@@ -44,9 +45,10 @@ public class SweepItem : TaskItem
         PlayerInteraction.Instance.onHoldDownInteractEnd -= OnHoldDownEnd;
     }
 
-    public void OnHoldDownStart()
+    public void OnHoldDownStart(TaskItem i)
     {
-        isActive = true;
+        if(i == this)
+            isActive = true;
     }
 
     public void OnHoldDownEnd()

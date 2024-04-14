@@ -19,9 +19,8 @@ public class TrashItem : TaskItem
     public override void HandlePlayerInteract()
     {
         if (complete) return;
-        FindObjectOfType<PlayerInteraction>().TryPickUp(this);
-        // set outlined version of the sprite
         activeInteractionSprite.enabled = true;
+        FindObjectOfType<PlayerInteraction>().TryPickUp(this);
     }
 
     public override void HandleItemInteract(TaskItem t)
@@ -37,6 +36,7 @@ public class TrashItem : TaskItem
         complete = true;
         RoomTasksManager.Instance.OnTaskWasCompleted();
         transform.DOMove(collector.transform.position, 0.25f);
+        EffectsManager.Instance.SpawnEffectAtPosition(EffectType.SPARKLE, collector.transform.position);
         StartCoroutine(DestorySelfAfterDelay());
     }
 

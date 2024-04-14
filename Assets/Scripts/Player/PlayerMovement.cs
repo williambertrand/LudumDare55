@@ -138,7 +138,7 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
         }
     }
 
-    public void OnHoldDownStart()
+    public void OnHoldDownStart(TaskItem i)
     {
         currentState = PlayerState.Sweeping;
     }
