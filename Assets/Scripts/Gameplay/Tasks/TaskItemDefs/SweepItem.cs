@@ -2,17 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SweepTask : MonoBehaviour
+public class SweepItem : TaskItem
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public bool isActive;
+    public float timeToComplete;
+    public float timeRemaining;
+
+    private SpriteRenderer renderer;
+
+    private void Start()
     {
-        
+        type = TaskItemInteractionType.SWEEP;
+        isActive = false;
+        PlayerInteraction.Instance.onHoldDownInteractStart += OnHoldDownStart;
+        PlayerInteraction.Instance.onHoldDownInteractEnd += OnHoldDownEnd;
+        timeRemaining = timeToComplete;
+        renderer = GetComponentInChildren<SpriteRenderer>();
+    }
+    private void Update()
+    {
+
+        if(timeRemaining <= 0)
+        {
+            RoomTasksManager.Instance.OnTaskWasCompleted();
+            Destroy(gameObject);
+        }
+
+        if(isActive)
+        {
+            timeRemaining -= Time.deltaTime;
+            Color tmp = renderer.color;
+            tmp.a = GetCompletePercent();
+            renderer.color = tmp;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        
+        PlayerInteraction.Instance.onHoldDownInteractStart -= OnHoldDownStart;
+        PlayerInteraction.Instance.onHoldDownInteractEnd -= OnHoldDownEnd;
+    }
+
+    public void OnHoldDownStart()
+    {
+        isActive = true;
+    }
+
+    public void OnHoldDownEnd()
+    {
+        isActive = false;
+    }
+
+    public float GetCompletePercent()
+    {
+        return timeRemaining / timeToComplete;
     }
 }

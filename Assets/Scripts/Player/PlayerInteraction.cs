@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInteraction : MonoBehaviour
+public class PlayerInteraction : MonoSingleton<PlayerInteraction>
 {
 
     public TaskItem currentCaryItem;
@@ -14,6 +14,12 @@ public class PlayerInteraction : MonoBehaviour
     public Transform interactPos;
     public float interactRadius;
     public LayerMask interactLayer;
+
+    public delegate void OnHoldInteractionStart();
+    public OnHoldInteractionStart onHoldDownInteractStart;
+
+    public delegate void OnHoldInteractionEnd();
+    public OnHoldInteractionStart onHoldDownInteractEnd;
 
     // Start is called before the first frame update
     void Start()
@@ -57,9 +63,11 @@ public class PlayerInteraction : MonoBehaviour
 
     public void Interact(InputAction.CallbackContext context)
     {
-        if(context.phase == InputActionPhase.Started)
+
+        if (context.phase == InputActionPhase.Started)
         {
-            if(currentCaryItem != null)
+            
+            if (currentCaryItem != null)
             {
                 Drop();
                 return;
@@ -75,8 +83,17 @@ public class PlayerInteraction : MonoBehaviour
                     Debug.Log("other item not on col");
                     return;
                 }
+                else if (otherItem is SweepItem)
+                {
+                    onHoldDownInteractStart?.Invoke();
+                }
                 otherItem.HandlePlayerInteract();
             }
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            Debug.Log("HOLD DOWN END!!!");
+            onHoldDownInteractEnd?.Invoke();
         }
         
     }
