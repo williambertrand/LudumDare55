@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Room0
   m_EditorClassIdentifier: 
   roomName: Room0
-  dialogue: Tidy Up Demon, please take out the trash!
+  dialogue: Tidy Up Demon, please put the shoes away in the chest!
   tutorial: Press "Space" to pick up and drop items.
+  transitionText: 
   numTasks: 1
   tasks:
   - type: 0
