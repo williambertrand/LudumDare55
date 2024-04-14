@@ -23,7 +23,7 @@ public class SweepItem : TaskItem
     private void Update()
     {
 
-        if(timeRemaining <= 0)
+        if(timeRemaining <= 0.2f)
         {
             RoomTasksManager.Instance.OnTaskWasCompleted();
             Destroy(gameObject);
@@ -56,6 +56,6 @@ public class SweepItem : TaskItem
 
     public float GetCompletePercent()
     {
-        return timeRemaining / timeToComplete;
+        return Mathf.Max(timeRemaining / timeToComplete, 0.2f);
     }
 }

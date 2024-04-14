@@ -41,6 +41,7 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
             t.gameObject.transform.parent = transform;
             carryItemOriginalYPos = t.gameObject.transform.position.y;
             t.gameObject.transform.localPosition = carryHolder.transform.localPosition;
+            t.gameObject.GetComponent<BoxCollider2D>().enabled = false;
         } else
         {
             Debug.LogFormat("Player already holding item: {0}", currentCaryItem.gameObject.name);
@@ -69,8 +70,33 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
             
             if (currentCaryItem != null)
             {
-                Drop();
-                return;
+                if(currentCaryItem.id.Contains("Broom"))
+                {
+                    Collider2D colWithBroom = Physics2D.OverlapCircle(interactPos.position, interactRadius, interactLayer);
+                    if (colWithBroom != null)
+                    {                    
+                        TaskItem otherItem = colWithBroom.gameObject.GetComponent<TaskItem>();
+                        if (otherItem == null)
+                        {
+                            Drop();
+                            return;
+                        }
+                        else if (otherItem is SweepItem)
+                        {
+                            onHoldDownInteractStart?.Invoke();
+                            return;
+                        }
+                    } else
+                    {
+                        Drop();
+                        return;
+                    }
+                }
+                else
+                {
+                    Drop();
+                    return;
+                }
             }
 
             Collider2D col = Physics2D.OverlapCircle(interactPos.position, interactRadius, interactLayer);
@@ -85,6 +111,8 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
                 }
                 else if (otherItem is SweepItem)
                 {
+                    if (currentCaryItem == null || !currentCaryItem.id.Contains("Broom"))
+                        return;
                     onHoldDownInteractStart?.Invoke();
                 }
                 otherItem.HandlePlayerInteract();
@@ -92,10 +120,8 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
-            Debug.Log("HOLD DOWN END!!!");
             onHoldDownInteractEnd?.Invoke();
-        }
-        
+        }   
     }
 
     private void OnDrawGizmosSelected()

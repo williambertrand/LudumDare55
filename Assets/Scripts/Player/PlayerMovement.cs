@@ -7,7 +7,7 @@ public enum PlayerState
 {
     Normal,
     InRoll,
-    Stunned
+    Sweeping
 }
 
 public class PlayerMovement : MonoSingleton<PlayerMovement>
@@ -44,6 +44,18 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
         isFacingRight = true;
     }
 
+    private void Start()
+    {
+        PlayerInteraction.Instance.onHoldDownInteractStart += OnHoldDownStart;
+        PlayerInteraction.Instance.onHoldDownInteractEnd += OnHoldDownEnd;
+    }
+
+    private void OnDestroy()
+    {
+        PlayerInteraction.Instance.onHoldDownInteractStart -= OnHoldDownStart;
+        PlayerInteraction.Instance.onHoldDownInteractEnd -= OnHoldDownEnd;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -53,16 +65,12 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
                 _collider2D.enabled = false;
                 InRoll();
                 break;
+            case PlayerState.Sweeping:
             case PlayerState.Normal:
                 _collider2D.enabled = true;
                 Normal();
                 break;
         }
-
-    }
-
-    private void Stunned()
-    {
 
     }
 
@@ -94,15 +102,7 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
         if (animator != null)
             animator.SetFloat("speed", Mathf.Abs(moveDir.magnitude));
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Return))
-        {
-            animator.SetTrigger("roll");
-            rollSpeed = startingRollSpeed;
-            rollDir = moveDir;
-            currentState = PlayerState.InRoll;
-            // pause walk wile roll/dash
-            // animator.SetFloat("speed", 0.0f);
-        }
+        
 
         if (moveX > 0) isFacingRight = true;
         else if (moveX < 0) isFacingRight = false;
@@ -112,8 +112,7 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
 
     public bool CanMove()
     {
-        //if (playerController._isStunned) return false;
-        //if (playerAttack.isPlayerAttacking) return false;
+        if (currentState == PlayerState.Sweeping) return false;
         return true;
     }
 
@@ -137,6 +136,16 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
                     rigidBody.velocity = rollDir * rollSpeed;
                 break;
         }
+    }
+
+    public void OnHoldDownStart()
+    {
+        currentState = PlayerState.Sweeping;
+    }
+
+    public void OnHoldDownEnd()
+    {
+        currentState = PlayerState.Normal;
     }
 
     private void Flip()
