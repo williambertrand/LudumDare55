@@ -27,7 +27,8 @@ public class TaskItem : MonoBehaviour
             return;
         }
 
-        gameObject.GetComponent<BoxCollider2D>().enabled = true;
+        if(gameObject.GetComponent<BoxCollider2D>() != null)
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
 
         // Check for interaction item within bounds
         Collider2D[] otherItemCols = Physics2D.OverlapCircleAll(transform.position, GameConstants.ITEM_CHECK_RADIUS);

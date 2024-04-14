@@ -20,7 +20,8 @@ public class TidyItem : TaskItem
     public override void OnCollect(CollectorItem collector)
     {
         complete = true;
-        transform.DOMove(collector.spot.position, 0.5f);
+        Transform spot = collector.getOpenSpot();
+        transform.DOMove(spot.position, 0.5f);
         RoomTasksManager.Instance.OnTaskWasCompleted();
     }
 }

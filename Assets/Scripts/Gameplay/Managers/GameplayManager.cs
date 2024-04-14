@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameplayManager : MonoSingleton<GameplayManager>
 {
@@ -18,7 +19,13 @@ public class GameplayManager : MonoSingleton<GameplayManager>
     public float delayTransitionTime;
     public float transitionTime;
     public float transitionHoldTime;
+    public TMP_Text transitionTitle;
     public CanvasGroup roomTransitionUI;
+
+    public CanvasGroup dialogueUIPanel;
+    public TMP_Text dialogueText;
+
+    private string DEFAULT_TRANSITION_TEXT = "You have been summoned!";
 
     private void Awake()
     {
@@ -28,6 +35,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         CheckRoomSetup();
 
         OnNextRoom();
+        OnNewRoomStarted();
         didWin = false;
     }
     // Start is called before the first frame update
@@ -103,6 +111,8 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     public IEnumerator HandleTransitionAndNextRoom()
     {
+        Room newRoom = gameRooms[currentRoom];
+        transitionTitle.text = newRoom.transitionText || DEFAULT_TRANSITION_TEXT; 
         yield return new WaitForSeconds(delayTransitionTime);
 
         AnimateRoomTransition(true);
@@ -113,6 +123,8 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         yield return new WaitForSeconds(transitionHoldTime);
 
         AnimateRoomTransition(false);
+
+        OnNewRoomStarted();
 
     }
 
@@ -135,5 +147,41 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         yield return new WaitForSeconds(delayTransitionTime);
 
         SceneManager.LoadScene(SCENES.END);
+    }
+
+    // Handle dialogue or tutorial
+    private void OnNewRoomStarted()
+    {
+        StartCoroutine(ShowRoomDialogueAndTutorial());
+    }
+
+    private IEnumerator ShowRoomDialogueAndTutorial()
+    {
+        Room newRoom = gameRooms[currentRoom];
+        if (newRoom.dialogue != null)
+        {
+            dialogueText.text = newRoom.dialogue;
+            ShowDialogue();
+            yield return new WaitForSeconds(3.0f);
+        }
+
+        if (newRoom.tutorial != null)
+        {
+            dialogueText.text = newRoom.tutorial;
+            //ShowDialogueText(newRoom.tutorial);
+            yield return new WaitForSeconds(3.0f);
+        }
+
+        HideDialogue();
+    }
+
+    private void ShowDialogue()
+    {
+        dialogueUIPanel.transform.DOMoveY(75, 0.75f);
+    }
+
+    private void HideDialogue()
+    {
+        dialogueUIPanel.transform.DOMoveY(-130, 0.75f);
     }
 }
