@@ -15,8 +15,11 @@ MonoBehaviour:
   roomName: Room0
   dialogue: Tidy Up Demon, please put the shoes away in the chest!
   tutorial: Press "Space" to pick up and drop items.
+  tutorial2: But watch the timer, you can only survive in the physical realm for
+    so long!
   transitionText: 
   numTasks: 1
+  roomTimer: 20
   tasks:
   - type: 0
     description: Trash dumped!

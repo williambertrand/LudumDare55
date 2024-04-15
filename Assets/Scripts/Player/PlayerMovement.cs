@@ -15,6 +15,7 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
     public static event Action OnPlayerMove;
 
     public PlayerState currentState;
+    public bool waiting;
 
     [Header("References")]
     [SerializeField] private Animator animator;
@@ -25,6 +26,7 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
     [SerializeField] private float verticalFactor;
     [SerializeField] private float startingRollSpeed;
     [SerializeField] private float rollDropOffFactor;
+    private float baseSpeed;
 
     private float rollSpeed; // represents current speed while rolling, drops off back down to match movespeed   
     private Vector3 moveDir;
@@ -48,6 +50,7 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
     {
         PlayerInteraction.Instance.onHoldDownInteractStart += OnHoldDownStart;
         PlayerInteraction.Instance.onHoldDownInteractEnd += OnHoldDownEnd;
+        baseSpeed = moveSpeed;
     }
 
     private void OnDestroy()
@@ -112,6 +115,7 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
 
     public bool CanMove()
     {
+        if (waiting) return false;
         if (currentState == PlayerState.Sweeping) return false;
         return true;
     }
@@ -154,5 +158,11 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
         Vector3 theScale = transform.localScale;
         theScale.x = isFacingRight ? 1 : -1;
         transform.localScale = theScale;
+    }
+
+
+    public void UpdateSpeed(float speedFactor)
+    {
+        moveSpeed = baseSpeed * speedFactor;
     }
 }

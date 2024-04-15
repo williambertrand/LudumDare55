@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78515ed83aafb3b46bb6b0ab611bb1f5, type: 3}
-  m_Name: Room5
+  m_Name: Room7
   m_EditorClassIdentifier: 
-  roomName: Room5
-  dialogue: Tidy Up Demon, you are summoned to put all the wine bottles back on the
-    tables!
+  roomName: Room7
+  dialogue: 
   tutorial: 
   transitionText: 
-  numTasks: 6
-  roomTimer: 30
+  numTasks: 4
+  roomTimer: 15
   tasks: []

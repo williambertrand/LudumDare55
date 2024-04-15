@@ -17,6 +17,7 @@ MonoBehaviour:
   tutorial: 
   transitionText: You have been summoned... again!
   numTasks: 3
+  roomTimer: 20
   tasks:
   - type: 3
     description: Put the book  away
