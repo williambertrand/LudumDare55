@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+public enum TidyItemType
+{
+    BOOK,
+    WINE,
+    CANDLE,
+    OTHER
+}
+
 public class TidyItem : TaskItem
 {
     private bool complete;
@@ -11,6 +19,8 @@ public class TidyItem : TaskItem
     [SerializeField] private SpriteRenderer activeInteractionSprite;
 
     [SerializeField] private SpriteRenderer collectedInteractionSprite;
+
+    [SerializeField] private TidyItemType tidyItemType;
 
     private void Start()
     {
@@ -37,5 +47,24 @@ public class TidyItem : TaskItem
         transform.DOMove(spot.position, 0.5f);
         RoomTasksManager.Instance.OnTaskWasCompleted();
         EffectsManager.Instance.SpawnEffectAtPosition(EffectType.SPARKLE, spot.transform.position);
+        PlaySound();
+    }
+
+    private void PlaySound ()
+    {
+        switch (tidyItemType)
+        {
+            case TidyItemType.BOOK:
+                AudioManager.Instance.PlayOneShot(AudioEvent.BOOK_DROP);
+                break;
+            case TidyItemType.WINE:
+                AudioManager.Instance.PlayOneShot(AudioEvent.WINE);
+                break;
+            case TidyItemType.OTHER:
+                AudioManager.Instance.PlayOneShot(AudioEvent.OTHER);
+                break;
+            default:
+                break;
+        }
     }
 }

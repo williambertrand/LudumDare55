@@ -134,8 +134,10 @@ MonoBehaviour:
   obj: {fileID: 0}
   position: {fileID: 0}
   id: candle
+  originalSprite: {fileID: 0}
   activeInteractionSprite: {fileID: 4458638816907649374}
   collectedInteractionSprite: {fileID: 0}
+  tidyItemType: 3
 --- !u!58 &4458638818101250070
 CircleCollider2D:
   m_ObjectHideFlags: 0
