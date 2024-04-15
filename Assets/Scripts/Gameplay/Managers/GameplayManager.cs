@@ -189,6 +189,13 @@ public class GameplayManager : MonoSingleton<GameplayManager>
             yield return new WaitForSeconds(3.0f);
         }
 
+        if (!newRoom.tutorial2.Equals(""))
+        {
+            dialogueText.text = newRoom.tutorial2;
+            //ShowDialogueText(newRoom.tutorial);
+            yield return new WaitForSeconds(3.0f);
+        }
+
         PlayerMovement.Instance.waiting = false;
         Timer.Instance.Resume();
 
