@@ -7,6 +7,9 @@ public class BroomTaskItem : TaskItem
 
     private Animator anim;
 
+    [SerializeField] private SpriteRenderer displaySprite;
+    [SerializeField] private SpriteRenderer activeInteractionSprite;
+
     private void Start()
     {
         type = TaskItemInteractionType.PICK_UP;
@@ -18,6 +21,8 @@ public class BroomTaskItem : TaskItem
     public override void HandlePlayerInteract()
     {
         FindObjectOfType<PlayerInteraction>().TryPickUp(this);
+        activeInteractionSprite.enabled = true;
+        displaySprite.enabled = false;
     }
 
     public void OnHoldDownStart(TaskItem i)
@@ -29,6 +34,13 @@ public class BroomTaskItem : TaskItem
     public void OnHoldDownEnd()
     {
         anim.SetBool("sweeping", false);
+    }
+
+    public override void OnDrop()
+    {
+        base.OnDrop();
+        activeInteractionSprite.enabled = false;
+        displaySprite.enabled = true;
     }
 
 }

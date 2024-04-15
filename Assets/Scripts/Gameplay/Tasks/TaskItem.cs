@@ -19,7 +19,7 @@ public class TaskItem : MonoBehaviour
 
     // We may need ref to a task from the item so we can use it on complete?
 
-    public void OnDrop()
+    public virtual void OnDrop()
     {
         if(type != TaskItemInteractionType.PICK_UP)
         {
