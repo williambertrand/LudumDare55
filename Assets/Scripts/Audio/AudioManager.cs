@@ -22,6 +22,8 @@ public class AudioManager : MonoBehaviour
     public delegate void OnMusicLoaded();
     public OnMusicLoaded onLoad;
 
+    bool isPlayingMusic = false;
+
     public bool hasLoaded;
 
     Dictionary<AudioEvent, AudioClip> sfxClips;
@@ -47,7 +49,7 @@ public class AudioManager : MonoBehaviour
         _audioSFX = gameObject.AddComponent<AudioSource>();
         _audioMusic = gameObject.AddComponent<AudioSource>();
         _audioMusic.volume = 0.7f;
-        _audioSFX.volume = 0.7f;
+        _audioSFX.volume = 0.8f;
 
         sfxClips = new Dictionary<AudioEvent, AudioClip>();
 
@@ -89,10 +91,13 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
+        _audioMusic.Stop();
+
         _audioMusic.clip = clip;
-        _audioMusic.volume = 0.35f;
+        _audioMusic.volume = 0.2f;
         _audioMusic.loop = true;
         _audioMusic.Play();
+        isPlayingMusic = true;
     }
 
     public void StopAll()

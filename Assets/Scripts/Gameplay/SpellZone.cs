@@ -13,7 +13,7 @@ public class SpellZone : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        activeSprite.enabled = false;
     }
 
     // Update is called once per frame
