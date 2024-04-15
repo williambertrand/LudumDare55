@@ -10,19 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78515ed83aafb3b46bb6b0ab611bb1f5, type: 3}
-  m_Name: Room2
+  m_Name: Room10
   m_EditorClassIdentifier: 
-  roomName: Room2
-  dialogue: Please sweep up the broken glass and wine!
-  tutorial: Hold Space while holding broom to sweep.
+  roomName: Room10
+  dialogue: Oh Tidy Demon, You are summoned to put these final books away!
+  tutorial: 
   tutorial2: 
-  transitionText: You have once again been summoned!
-  numTasks: 2
-  roomTimer: 30
-  tasks:
-  - type: 2
-    description: 
-    items: []
-  - type: 0
-    description: 
-    items: []
+  transitionText: You are summoned for one final task!
+  numTasks: 3
+  roomTimer: 18
+  tasks: []

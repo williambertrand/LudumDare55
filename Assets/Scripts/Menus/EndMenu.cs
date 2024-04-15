@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EndMenu : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class EndMenu : MonoBehaviour
     void Start()
     {
         titleText.text = getTitleTextForGameState();
-        totalText.text = "" + GameplayManager.Instance.totalTasks;
+        totalText.text = "" + GameStats.Instance.totalTasks;
     }
 
     // Update is called once per frame
@@ -24,7 +25,7 @@ public class EndMenu : MonoBehaviour
 
     private string getTitleTextForGameState()
     {
-        if(GameplayManager.Instance.didWin)
+        if(GameStats.Instance.didWin)
         {
             return "Great Job!";
         } else
@@ -35,7 +36,7 @@ public class EndMenu : MonoBehaviour
 
     private string getDescriptionTextForGameState()
     {
-        if (GameplayManager.Instance.didWin)
+        if (GameStats.Instance.didWin)
         {
             return "Great Job!";
         }
@@ -43,5 +44,20 @@ public class EndMenu : MonoBehaviour
         {
             return "You ran out of time!";
         }
+    }
+
+    public void OnPlayAgain()
+    {
+        SceneManager.LoadScene(SCENES.GAMEPLAY);
+    }
+
+    public void OnResume()
+    {
+        GameStats.Instance.didResume = true;
+        SceneManager.LoadScene(SCENES.GAMEPLAY);
+    }
+    public void OnMenu()
+    {
+        SceneManager.LoadScene(SCENES.MENU);
     }
 }

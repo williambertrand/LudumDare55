@@ -49,6 +49,7 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
             t.gameObject.GetComponent<BoxCollider2D>().enabled = false;
         } else
         {
+            Drop();
             Debug.LogFormat("Player already holding item: {0}", currentCaryItem.gameObject.name);
         }
     }
@@ -62,7 +63,7 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
         }
 
         currentCaryItem.transform.parent = null;
-        // currentCaryItem.transform.position = new Vector3(currentCaryItem.transform.position.x, carryItemOriginalYPos, currentCaryItem.transform.position.z);
+        //currentCaryItem.transform.position = new Vector3(currentCaryItem.transform.position.x, currentCaryItem.transform.position.y - 0.5f, currentCaryItem.transform.position.z);
         currentCaryItem.OnDrop();
         currentCaryItem = null;
     }
@@ -130,6 +131,7 @@ public class PlayerInteraction : MonoSingleton<PlayerInteraction>
 
     private void OnCompleteRoom(List<Task> tasks)
     {
+        Debug.LogFormat("PLAYER INT: ON COMPLETE ROOM: {0}", currentCaryItem);
         // make sure player drops an item like brrom if still holding
         if(currentCaryItem != null)
         {

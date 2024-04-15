@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Room7
   m_EditorClassIdentifier: 
   roomName: Room7
-  dialogue: 
+  dialogue: Watch out for the holy magic, Tidy Demon!
   tutorial: 
+  tutorial2: 
   transitionText: 
   numTasks: 4
   roomTimer: 15

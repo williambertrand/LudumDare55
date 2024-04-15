@@ -150,8 +150,10 @@ MonoBehaviour:
   obj: {fileID: 0}
   position: {fileID: 0}
   id: jar
+  originalSprite: {fileID: 4742993699631421052}
   activeInteractionSprite: {fileID: 5106491940030831027}
   collectedInteractionSprite: {fileID: 0}
+  tidyItemType: 0
 --- !u!1 &4742993699631421054
 GameObject:
   m_ObjectHideFlags: 0

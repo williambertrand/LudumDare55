@@ -5,13 +5,12 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class GameplayManager : MonoSingleton<GameplayManager>
+public class GameplayManager : MonoBehaviour
 {
 
     // Data required between rooms:
     public int currentRoom;
     public int totalTasks;
-    public bool didWin;
     public List<Room> gameRooms;
     public GameObject roomHolder;
 
@@ -19,46 +18,66 @@ public class GameplayManager : MonoSingleton<GameplayManager>
     public float delayTransitionTime;
     public float transitionTime;
     public float transitionHoldTime;
-    public TMP_Text transitionTitle;
-    public CanvasGroup roomTransitionUI;
+    private TMP_Text transitionTitle;
+    private CanvasGroup roomTransitionUI;
 
-    public CanvasGroup dialogueUIPanel;
-    public TMP_Text dialogueText;
+    private CanvasGroup dialogueUIPanel;
+    private TMP_Text dialogueText;
 
     private string DEFAULT_TRANSITION_TEXT = "You have been summoned!";
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         RoomTasksManager.Instance.onRoomComplete += OnRoomCompleted;
         totalTasks = 0;
         CheckRoomSetup();
+        transitionTitle = GameObject.Find("TransitionTitle").GetComponent<TMP_Text>();
+        roomTransitionUI = GameObject.Find("RoomTransitionUI").GetComponent<CanvasGroup>();
+        dialogueUIPanel = GameObject.Find("DialogueUIPanel").GetComponent<CanvasGroup>();
+        dialogueText = GameObject.Find("DialogueText").GetComponent<TMP_Text>();
+
     }
 
     private void OnDestroy()
     {
-        RoomTasksManager.Instance.onRoomComplete -= OnRoomCompleted;
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
+
+        if(GameStats.Instance == null)
+        {
+            GameObject stats = new GameObject();
+            stats.AddComponent<GameStats>();
+        }
+
+        GameStats.Instance.totalTasks = 0;
+
         PlayerMovement.Instance.waiting = true;
-        OnNextRoom();
-        OnNewRoomStarted();
         Timer.Instance.Pause();
-        didWin = false;
+        GameStats.Instance.didWin = false;
+        Timer.Instance.onTimerFinished += OnTimerExpire;
+        if (GameStats.Instance.didResume)
+        {
+            GameStats.Instance.didResume = false;
+            currentRoom = GameStats.Instance.roomsCleared;
+        }
+        StartCoroutine(HandleTransitionAndNextRoom(false));
+        Room newRoom = gameRooms[currentRoom];
+        RoomTasksManager.Instance.OnNewRoom(newRoom);
+    }
+
+    public void OnPlayStart()
+    {
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         
-    }
-
-    public void OnTaskCompleted()
-    {
-
     }
 
     private void UpdatePlayerPos(Vector3 pos)
@@ -69,13 +88,13 @@ public class GameplayManager : MonoSingleton<GameplayManager>
     public void OnRoomCompleted(List<Task> tasks)
     {
         PlayerMovement.Instance.waiting = true;
-        totalTasks += tasks.Count;
+        GameStats.Instance.totalTasks += tasks.Count;
         Timer.Instance.Pause();
 
         if (currentRoom == gameRooms.Count - 1)
         {
             // On game completed!
-            didWin = true;
+            GameStats.Instance.didWin = true;
             StartCoroutine(HandleTransitionToGameOver());
             return;
         }
@@ -84,7 +103,15 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         currentRoom += 1;
 
         // Show transition ui, update player pos, and then hide transition ui
-        StartCoroutine(HandleTransitionAndNextRoom());
+        StartCoroutine(HandleTransitionAndNextRoom(true));
+    }
+
+    public void OnTimerExpire()
+    {
+        Debug.Log("TIMER EXPIRED FROM GAMEMANAGER");
+        GameStats.Instance.didWin = false;
+        GameStats.Instance.roomsCleared = currentRoom;
+        StartCoroutine(HandleTransitionToGameOver());
     }
 
 
@@ -125,32 +152,33 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         }
     }
 
-    public IEnumerator HandleTransitionAndNextRoom()
+    public IEnumerator HandleTransitionAndNextRoom(bool fadeIN)
     {
         Room newRoom = gameRooms[currentRoom];
-        transitionTitle.text = newRoom.transitionText.Equals("") ? DEFAULT_TRANSITION_TEXT: newRoom.transitionText; 
-        yield return new WaitForSeconds(delayTransitionTime);
+        transitionTitle.text = newRoom.transitionText.Equals("") ? DEFAULT_TRANSITION_TEXT: newRoom.transitionText;
+        if (fadeIN)
+            yield return new WaitForSeconds(delayTransitionTime);
 
-        AnimateRoomTransition(true);
+        AnimateRoomTransition(true, fadeIN);
         yield return new WaitForSeconds(transitionTime);
 
         OnNextRoom();
 
         yield return new WaitForSeconds(transitionHoldTime);
 
-        AnimateRoomTransition(false);
+        AnimateRoomTransition(false, false);
 
         OnNewRoomStarted();
 
     }
 
-    private void AnimateRoomTransition(bool shown)
+    private void AnimateRoomTransition(bool shown, bool fadeIn)
     {
         
         if(shown)
         {
             roomTransitionUI.alpha = 0;
-            roomTransitionUI.DOFade(1, transitionTime);
+            roomTransitionUI.DOFade(1, fadeIn ? transitionTime : 0.0f);
         } else
         {
             roomTransitionUI.alpha = 1;
@@ -160,8 +188,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     public IEnumerator HandleTransitionToGameOver()
     {
-        yield return new WaitForSeconds(delayTransitionTime);
-
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene(SCENES.END);
     }
 
@@ -179,17 +206,17 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         {
             dialogueText.text = newRoom.dialogue;
             ShowDialogue();
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(3.5f);
         }
 
         if (!newRoom.tutorial.Equals(""))
         {
             dialogueText.text = newRoom.tutorial;
             //ShowDialogueText(newRoom.tutorial);
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(4.0f);
         }
 
-        if (!newRoom.tutorial2.Equals(""))
+        if (newRoom.tutorial2 != null && !newRoom.tutorial2.Equals(""))
         {
             dialogueText.text = newRoom.tutorial2;
             //ShowDialogueText(newRoom.tutorial);
@@ -204,11 +231,23 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     private void ShowDialogue()
     {
-        dialogueUIPanel.transform.DOMoveY(100, 0.75f);
+        dialogueUIPanel.transform.DOMoveY(130, 0.75f);
     }
 
     private void HideDialogue()
     {
         dialogueUIPanel.transform.DOMoveY(-130, 0.75f);
+    }
+
+    public void Clear()
+    {
+        totalTasks = 0;
+        GameStats.Instance.didWin = false;
+    }
+
+    public void Resume()
+    {
+        GameStats.Instance.didWin = false;
+        currentRoom = GameStats.Instance.roomsCleared;
     }
 }

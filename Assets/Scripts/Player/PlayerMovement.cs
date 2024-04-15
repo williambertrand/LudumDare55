@@ -34,13 +34,10 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
 
     private bool isFacingRight;
 
-    private Collider2D _collider2D;
-
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         //animator = GetComponent<Animator>();
-        _collider2D = GetComponent<Collider2D>();
         //playerController = GetComponent<PlayerController>();
         currentState = PlayerState.Normal;
         isFacingRight = true;
@@ -64,13 +61,8 @@ public class PlayerMovement : MonoSingleton<PlayerMovement>
     {
         switch (currentState)
         {
-            case PlayerState.InRoll:
-                _collider2D.enabled = false;
-                InRoll();
-                break;
             case PlayerState.Sweeping:
             case PlayerState.Normal:
-                _collider2D.enabled = true;
                 Normal();
                 break;
         }

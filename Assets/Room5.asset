@@ -15,7 +15,9 @@ MonoBehaviour:
   roomName: Room5
   dialogue: Tidy Up Demon, you are summoned to put all the wine bottles back on the
     tables!
-  tutorial: 
+  tutorial: Demonic spell circles will speed you up, but holy spells will slow you
+    down.
+  tutorial2: 
   transitionText: 
   numTasks: 6
   roomTimer: 30

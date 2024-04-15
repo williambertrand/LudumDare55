@@ -67,4 +67,12 @@ public class TidyItem : TaskItem
                 break;
         }
     }
+
+    //public override void OnDrop()
+    //{
+    //    base.OnDrop();
+    //    if (activeInteractionSprite != null)
+    //        activeInteractionSprite.enabled = false;
+
+    //}
 }

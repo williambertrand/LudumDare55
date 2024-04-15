@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 1205428429
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1408980743, guid: 4da08c43bfaea474da19f90ce2e4f9e6, type: 3}
+  m_Sprite: {fileID: -1225226354, guid: a2524b99d4f9f4942add3bb3155fda5f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -161,8 +161,8 @@ MonoBehaviour:
   obj: {fileID: 0}
   position: {fileID: 0}
   id: Broom
-  displaySprite: {fileID: 0}
-  activeInteractionSprite: {fileID: 0}
+  displaySprite: {fileID: 1256748170127840168}
+  activeInteractionSprite: {fileID: 3111188887838836462}
 --- !u!95 &3111188887626276323
 Animator:
   serializedVersion: 4

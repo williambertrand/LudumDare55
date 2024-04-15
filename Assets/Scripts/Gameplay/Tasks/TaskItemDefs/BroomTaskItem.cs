@@ -39,8 +39,10 @@ public class BroomTaskItem : TaskItem
     public override void OnDrop()
     {
         base.OnDrop();
-        activeInteractionSprite.enabled = false;
-        displaySprite.enabled = true;
+        if(activeInteractionSprite != null)
+            activeInteractionSprite.enabled = false;
+        if (displaySprite != null)
+            displaySprite.enabled = true;
     }
 
 }

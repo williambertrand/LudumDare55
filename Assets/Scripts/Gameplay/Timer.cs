@@ -12,13 +12,13 @@ public class Timer : MonoSingleton<Timer>
 
     public TMP_Text uiTimerText;
 
-    delegate void OnTimerFinished();
-    OnTimerFinished onTimerFinished;
+    public delegate void OnTimerFinished();
+    public OnTimerFinished onTimerFinished;
 
     void Start()
     {
-        currentTime = seconds;
         finished = false;
+        paused = true;
     }
 
     // Update is called once per frame
@@ -26,15 +26,16 @@ public class Timer : MonoSingleton<Timer>
     {
         if (finished) return;
 
-        if (currentTime <= 0)
+        if (paused)
         {
-            finished = true;
-            onTimerFinished?.Invoke();
             return;
         }
 
-        if(paused)
+        if (currentTime <= 0)
         {
+            Debug.Log("TIMER EXPIRED !_!_!_!_");
+            finished = true;
+            onTimerFinished?.Invoke();
             return;
         }
            

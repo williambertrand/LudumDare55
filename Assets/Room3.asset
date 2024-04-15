@@ -15,9 +15,10 @@ MonoBehaviour:
   roomName: Room3
   dialogue: Please put everything back where it belongs!
   tutorial: 
+  tutorial2: 
   transitionText: 
   numTasks: 3
-  roomTimer: 10
+  roomTimer: 15
   tasks:
   - type: 3
     description: 

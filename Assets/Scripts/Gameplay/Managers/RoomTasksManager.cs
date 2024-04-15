@@ -23,17 +23,6 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
     // Start is called before the first frame update
     void Start()
     {
-        foreach(Task task in currentRoomTasks)
-        {
-            if(task.items != null && task.items.Count > 0)
-            {
-                foreach(TaskItem item in task.items)
-                {
-                    //Instantiate(item.obj, item.position);
-                }
-            }
-        }
-      
     }
 
     public void OnTaskWasCompleted()

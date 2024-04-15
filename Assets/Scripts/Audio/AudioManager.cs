@@ -17,7 +17,7 @@ public enum MusicType
     MAIN
 }
 
-public class AudioManager : MonoSingleton<AudioManager>
+public class AudioManager : MonoBehaviour
 {
     public delegate void OnMusicLoaded();
     public OnMusicLoaded onLoad;
@@ -30,8 +30,17 @@ public class AudioManager : MonoSingleton<AudioManager>
     private AudioSource _audioSFX;
     private AudioSource _audioMusic;
 
+    public static AudioManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
+
+        if (Instance != this) Destroy(gameObject); 
 
         DontDestroyOnLoad(gameObject);
 
@@ -51,7 +60,7 @@ public class AudioManager : MonoSingleton<AudioManager>
 
         musicClips = new Dictionary<MusicType, AudioClip>();
 
-        musicClips.Add(MusicType.MAIN, loadClip("bgMusic1"));
+        musicClips.Add(MusicType.MAIN, loadClip("basicSong1"));
 
         Debug.Log("~~ Audio files loaded! ~~");
         hasLoaded = true;
@@ -81,6 +90,7 @@ public class AudioManager : MonoSingleton<AudioManager>
         }
 
         _audioMusic.clip = clip;
+        _audioMusic.volume = 0.35f;
         _audioMusic.loop = true;
         _audioMusic.Play();
     }
