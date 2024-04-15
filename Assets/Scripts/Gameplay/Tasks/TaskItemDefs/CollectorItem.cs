@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CollectorType
+{
+    TRUNK,
+    SHELF,
+    TABLE,
+}
+
 public class CollectorItem : TaskItem
 {
 
@@ -16,6 +23,7 @@ public class CollectorItem : TaskItem
     private int spotsUsed;
 
     [SerializeField] private SpriteRenderer onLimitReachedSprite;
+    [SerializeField] private CollectorType collectorItemType;
 
     private void Start()
     {
@@ -53,6 +61,11 @@ public class CollectorItem : TaskItem
 
         if(hasLimit && spotsUsed == limit)
         {
+            if(collectorItemType == CollectorType.TRUNK)
+            {
+                AudioManager.Instance.PlayOneShot(AudioEvent.TRUNK_CLOSE);
+            }
+            
             if (onLimitReachedSprite != null)
                 onLimitReachedSprite.enabled = true;
         }

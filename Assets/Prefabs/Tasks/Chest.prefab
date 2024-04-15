@@ -224,6 +224,7 @@ MonoBehaviour:
   limit: 0
   spots:
   - {fileID: 3262608673991553283}
+  onLimitReachedSprite: {fileID: 4528548218186393006}
 --- !u!61 &7572163148762140505
 BoxCollider2D:
   m_ObjectHideFlags: 0

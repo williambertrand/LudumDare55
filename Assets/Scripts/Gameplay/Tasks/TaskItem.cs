@@ -36,7 +36,6 @@ public class TaskItem : MonoBehaviour
         {
             foreach(Collider2D col in otherItemCols)
             {
-                Debug.LogFormat("on drop col: {0}", col.gameObject.name);
                 TaskItem otherItem = col.gameObject.GetComponent<TaskItem>();
                 if (otherItem != null && otherItem.type == TaskItemInteractionType.COLLECTOR)
                 {

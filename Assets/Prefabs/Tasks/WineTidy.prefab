@@ -150,8 +150,10 @@ MonoBehaviour:
   obj: {fileID: 0}
   position: {fileID: 0}
   id: wine
+  originalSprite: {fileID: 0}
   activeInteractionSprite: {fileID: 3878939332488371620}
   collectedInteractionSprite: {fileID: 0}
+  tidyItemType: 1
 --- !u!1 &6853223530108662629
 GameObject:
   m_ObjectHideFlags: 0

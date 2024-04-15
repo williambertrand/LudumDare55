@@ -63,7 +63,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     private void UpdatePlayerPos(Vector3 pos)
     {
-        Debug.Log("Updating player pos to new room...");
         PlayerController.Instance.gameObject.transform.position = pos;
     }
 

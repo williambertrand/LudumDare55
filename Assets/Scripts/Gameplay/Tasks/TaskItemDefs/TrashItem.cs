@@ -38,6 +38,7 @@ public class TrashItem : TaskItem
         transform.DOMove(collector.transform.position, 0.25f);
         EffectsManager.Instance.SpawnEffectAtPosition(EffectType.SPARKLE, collector.transform.position);
         StartCoroutine(DestorySelfAfterDelay());
+        AudioManager.Instance.PlayOneShot(AudioEvent.SHOE_DROP);
     }
 
     private void OnDrawGizmos()
