@@ -17,6 +17,7 @@ MonoBehaviour:
   tutorial: 
   transitionText: You have once again been summoned!
   numTasks: 2
+  roomTimer: 20
   tasks:
   - type: 2
     description: 

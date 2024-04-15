@@ -17,6 +17,7 @@ MonoBehaviour:
   tutorial: Press "Space" to pick up and drop items.
   transitionText: 
   numTasks: 1
+  roomTimer: 20
   tasks:
   - type: 0
     description: Trash dumped!

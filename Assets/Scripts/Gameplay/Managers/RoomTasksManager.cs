@@ -66,6 +66,7 @@ public class RoomTasksManager : MonoSingleton<RoomTasksManager>
 
     void UpdateUI()
     {
-        taskCounterText.text = string.Format("Tasks Complete: {0}/{1}", currentTaskCount, roomTaskCount);
+        if(taskCounterText != null)
+            taskCounterText.text = string.Format("Tasks Complete: {0}/{1}", currentTaskCount, roomTaskCount);
     }
 }

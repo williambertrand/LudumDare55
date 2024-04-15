@@ -8,5 +8,6 @@ public class Room : ScriptableObject
     public string tutorial;
     public string transitionText;
     public int numTasks;
+    public float roomTimer;
     public System.Collections.Generic.List<Task> tasks;
 }

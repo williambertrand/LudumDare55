@@ -17,4 +17,5 @@ MonoBehaviour:
   tutorial: 
   transitionText: 
   numTasks: 4
+  roomTimer: 25
   tasks: []

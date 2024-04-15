@@ -17,6 +17,7 @@ MonoBehaviour:
   tutorial: 
   transitionText: 
   numTasks: 3
+  roomTimer: 10
   tasks:
   - type: 3
     description: 

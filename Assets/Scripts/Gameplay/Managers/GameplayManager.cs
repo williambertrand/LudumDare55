@@ -33,10 +33,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         RoomTasksManager.Instance.onRoomComplete += OnRoomCompleted;
         totalTasks = 0;
         CheckRoomSetup();
-
-        OnNextRoom();
-        OnNewRoomStarted();
-        didWin = false;
     }
 
     private void OnDestroy()
@@ -47,7 +43,11 @@ public class GameplayManager : MonoSingleton<GameplayManager>
     // Start is called before the first frame update
     void Start()
     {
-        
+        PlayerMovement.Instance.waiting = true;
+        OnNextRoom();
+        OnNewRoomStarted();
+        Timer.Instance.Pause();
+        didWin = false;
     }
 
     // Update is called once per frame
@@ -68,8 +68,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     public void OnRoomCompleted(List<Task> tasks)
     {
-
+        PlayerMovement.Instance.waiting = true;
         totalTasks += tasks.Count;
+        Timer.Instance.Pause();
 
         if (currentRoom == gameRooms.Count - 1)
         {
@@ -173,6 +174,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>
     private IEnumerator ShowRoomDialogueAndTutorial()
     {
         Room newRoom = gameRooms[currentRoom];
+        Timer.Instance.SetTime(newRoom.roomTimer);
         if (newRoom.dialogue != null)
         {
             dialogueText.text = newRoom.dialogue;
@@ -186,6 +188,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>
             //ShowDialogueText(newRoom.tutorial);
             yield return new WaitForSeconds(3.0f);
         }
+
+        PlayerMovement.Instance.waiting = false;
+        Timer.Instance.Resume();
 
         HideDialogue();
     }
